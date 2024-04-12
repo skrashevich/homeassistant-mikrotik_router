@@ -260,7 +260,7 @@ class MikrotikCoordinator(DataUpdateCoordinator[None]):
             "environment": {},
             "ups": {},
             "gps": {},
-            "netwatch": {},
+            "netwatch_tracker": {},
         }
 
         self.notified_flags = []
@@ -391,10 +391,10 @@ class MikrotikCoordinator(DataUpdateCoordinator[None]):
         )
 
     # ---------------------------
-    #   option_sensor_netwatch
+    #   option_sensor_netwatch_tracker
     # ---------------------------
     @property
-    def option_sensor_netwatch(self):
+    def option_sensor_netwatch_tracker(self):
         """Config entry option to not track ARP."""
         return self.config_entry.options.get(
             CONF_SENSOR_NETWATCH_TRACKER, DEFAULT_SENSOR_NETWATCH_TRACKER
@@ -660,8 +660,8 @@ class MikrotikCoordinator(DataUpdateCoordinator[None]):
         if self.api.connected() and self.option_sensor_filter:
             await self.hass.async_add_executor_job(self.get_filter)
 
-        if self.api.connected() and self.option_sensor_netwatch:
-            await self.hass.async_add_executor_job(self.get_netwatch)
+        if self.api.connected() and self.option_sensor_netwatch_tracker:
+            await self.hass.async_add_executor_job(self.get_netwatch_tracker)
 
         if self.api.connected() and self.support_ppp and self.option_sensor_ppp:
             await self.hass.async_add_executor_job(self.get_ppp)
@@ -1347,12 +1347,12 @@ class MikrotikCoordinator(DataUpdateCoordinator[None]):
                 self.ds["ppp_secret"][uid]["encoding"] = "not connected"
 
     # ---------------------------
-    #   get_netwatch
+    #   get_netwatch_tracker
     # ---------------------------
-    def get_netwatch(self) -> None:
+    def get_netwatch_tracker(self) -> None:
         """Get netwatch data from Mikrotik"""
-        self.ds["netwatch"] = parse_api(
-            data=self.ds["netwatch"],
+        self.ds["netwatch_tracker"] = parse_api(
+            data=self.ds["netwatch_tracker"],
             source=self.api.query("/tool/netwatch"),
             key="host",
             vals=[

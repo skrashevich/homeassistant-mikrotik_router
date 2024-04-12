@@ -1,4 +1,5 @@
 """Definitions for Mikrotik Router binary sensor entities."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -188,7 +189,7 @@ SENSOR_TYPES: tuple[BinarySensorEntityDescription, ...] = (
         func="MikrotikPortBinarySensor",
     ),
     MikrotikBinarySensorEntityDescription(
-        key="netwatch",
+        key="netwatch_tracker",
         name="Netwatch",
         icon_enabled="mdi:lan-connect",
         icon_disabled="mdi:lan-pending",
@@ -196,7 +197,7 @@ SENSOR_TYPES: tuple[BinarySensorEntityDescription, ...] = (
         ha_group="Netwatch",
         ha_connection=DOMAIN,
         ha_connection_value="Netwatch",
-        data_path="netwatch",
+        data_path="netwatch_tracker",
         data_attribute="status",
         data_name="host",
         data_name_comment=True,

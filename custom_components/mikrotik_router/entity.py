@@ -1,4 +1,5 @@
 """Mikrotik HA shared entity model"""
+
 from __future__ import annotations
 
 from collections.abc import Mapping
@@ -72,8 +73,11 @@ def _skip_sensor(config_entry, entity_description, data, uid) -> bool:
     ):
         return True
 
-    if entity_description.data_path == "netwatch" and not config_entry.options.get(
-        CONF_SENSOR_NETWATCH_TRACKER, DEFAULT_SENSOR_NETWATCH_TRACKER
+    if (
+        entity_description.data_path == "netwatch_tracker"
+        and not config_entry.options.get(
+            CONF_SENSOR_NETWATCH_TRACKER, DEFAULT_SENSOR_NETWATCH_TRACKER
+        )
     ):
         return True
 
