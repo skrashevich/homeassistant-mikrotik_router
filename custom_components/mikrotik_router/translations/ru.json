@@ -2,11 +2,11 @@
     "config": {
         "step": {
             "user": {
-                "title": "Настроить Mikrotik Router",
-                "description": "Настройка Home Assistant для интеграции с Mikrotik.",
+                "title": "Настройка маршрутизатора Mikrotik",
+                "description": "Настроить интеграцию маршрутизатора Mikrotik.",
                 "data": {
                     "name": "Название интеграции",
-                    "host": "Адрес хоста",
+                    "host": "Хост",
                     "port": "Порт",
                     "username": "Имя пользователя",
                     "password": "Пароль",
@@ -15,10 +15,10 @@
             }
         },
         "error": {
-            "name_exists": "Это название уже используется.",
-            "cannot_connect": "Не удалось подключиться.",
-            "ssl_handshake_failure": "Ошибка SSL-соединения.",
-            "connection_timeout": "Истекло время подключения к Mikrotik.",
+            "name_exists": "Название уже существует.",
+            "cannot_connect": "Не удаётся подключиться к Mikrotik.",
+            "ssl_handshake_failure": "Ошибка установления SSL-соединения",
+            "connection_timeout": "Время ожидания соединения с Mikrotik истекло.",
             "wrong_login": "Неверное имя пользователя или пароль."
         }
     },
@@ -26,35 +26,35 @@
         "step": {
             "basic_options": {
                 "data": {
-                    "scan_interval": "Интервал сканирования (требуется перезагрузка HA)",
-                    "track_iface_clients": "Показывать в интерфейсе MAC и IP клиентов",
-                    "unit_of_measurement": "Единицы измерения",
-                    "track_network_hosts_timeout": "Таймаут отслеживания сетевых устройств (в секундах)",
-                    "zone": "Зона для отслеживания устройств"
+                    "scan_interval": "Интервал сканирования (требует перезапуска HA)",
+                    "track_iface_clients": "Показывать MAC и IP клиента на интерфейсах",
+                    "unit_of_measurement": "Единица измерения",
+                    "track_network_hosts_timeout": "Таймаут отслеживания устройств в сети (в секундах)",
+                    "zone": "Зона для отслеживания устройства"
                 },
-                "title": "Параметры Mikrotik Router (1\/2)",
-                "description": "Настроить интеграцию"
+                "title": "Параметры маршрутизатора Mikrotik (1/2)",
+                "description": "Настройка интеграции"
             },
             "sensor_select": {
                 "data": {
-                    "track_network_hosts": "Отслеживание сетевых устройств",
-                    "sensor_port_tracker": "Сенсоры отслеживания порта",
-                    "sensor_port_traffic": "Сенсоры трафика порта",
-                    "sensor_client_traffic": "Сенсоры клиентского трафика",
+                    "track_network_hosts": "Отслеживать устройства в сети",
+                    "sensor_port_tracker": "Датчики отслеживания портов",
+                    "sensor_port_traffic": "Датчики трафика портов",
+                    "sensor_client_traffic": "Датчики клиентского трафика",
                     "sensor_simple_queues": "Переключатели простых очередей",
-                    "sensor_nat": "Переключатели NAT правил",
-                    "sensor_scripts": "Переключатели скриптов",
-                    "sensor_environment": "Датчики окружающей среды",
-                    "sensor_kidcontrol": "Родительский контроль",
-                    "sensor_netwatch_tracker": "Netwatch tracker сенсор",
+                    "sensor_nat": "Переключатели NAT",
+                    "sensor_scripts": "Переключатели скрипты",
+                    "sensor_environment": "Датчики переменных окружения",
+                    "sensor_kidcontrol": "Контроль доступа детей",
+                    "sensor_netwatch_tracker": "Отслеживатель Netwatch",
                     "sensor_mangle": "Переключатели Mangle",
-                    "sensor_ppp": "PPP-пользователи",
-                    "sensor_filter": "Переключатели фильтров",
-                    "sensor_client_captive": "Данные портала авторизации"
+                    "sensor_ppp": "Пользователи PPP",
+                    "sensor_filter": "Переключатели Filter",
+                    "sensor_client_captive": "Данные порталов-ловушек"
                 },
-                "title": "Параметры Mikrotik Router (2\/2)",
+                "title": "Параметры маршрутизатора Mikrotik (2/2)",
                 "description": "Включить датчики и переключатели"
             }
         }
     }
-}
+}  
