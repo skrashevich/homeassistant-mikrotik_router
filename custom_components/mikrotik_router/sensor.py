@@ -1,4 +1,5 @@
 """Mikrotik sensor platform."""
+
 from __future__ import annotations
 
 from logging import getLogger
@@ -14,7 +15,7 @@ from homeassistant.helpers.typing import StateType
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .coordinator import MikrotikCoordinator
-from .entity import MikrotikEntity, async_add_entities
+from .entity import MikrotikEntity
 from .helper import format_attribute
 from .sensor_types import (
     SENSOR_TYPES,
@@ -41,14 +42,14 @@ async def async_setup_entry(
         "MikrotikInterfaceTrafficSensor": MikrotikInterfaceTrafficSensor,
         "MikrotikClientTrafficSensor": MikrotikClientTrafficSensor,
     }
-    await async_add_entities(hass, config_entry, dispatcher)
+    await _async_add_entities([dispatcher[sensor](...) for sensor in dispatcher])
 
 
 # ---------------------------
 #   MikrotikSensor
 # ---------------------------
 class MikrotikSensor(MikrotikEntity, SensorEntity):
-    """Define an Mikrotik sensor."""
+    """Define a Mikrotik sensor."""
 
     def __init__(
         self,
@@ -60,11 +61,12 @@ class MikrotikSensor(MikrotikEntity, SensorEntity):
         self._attr_suggested_unit_of_measurement = (
             self.entity_description.suggested_unit_of_measurement
         )
+        self._data = {}  # Initialize _data attribute
 
     @property
     def native_value(self) -> StateType | date | datetime | Decimal:
         """Return the value reported by the sensor."""
-        return self._data[self.entity_description.data_attribute]
+        return self._data.get(self.entity_description.data_attribute)
 
     @property
     def native_unit_of_measurement(self) -> str | None:
@@ -84,12 +86,12 @@ class MikrotikSensor(MikrotikEntity, SensorEntity):
 #   MikrotikInterfaceTrafficSensor
 # ---------------------------
 class MikrotikInterfaceTrafficSensor(MikrotikSensor):
-    """Define an Mikrotik MikrotikInterfaceTrafficSensor sensor."""
+    """Define a Mikrotik MikrotikInterfaceTrafficSensor sensor."""
 
     @property
     def extra_state_attributes(self) -> Mapping[str, Any]:
         """Return the state attributes."""
-        attributes = super().extra_state_attributes
+        attributes = {}
 
         if self._data["type"] == "ether":
             for variable in DEVICE_ATTRIBUTES_IFACE_ETHER:
@@ -113,23 +115,23 @@ class MikrotikInterfaceTrafficSensor(MikrotikSensor):
 #   MikrotikClientTrafficSensor
 # ---------------------------
 class MikrotikClientTrafficSensor(MikrotikSensor):
-    """Define an Mikrotik MikrotikClientTrafficSensor sensor."""
+    """Define a Mikrotik MikrotikClientTrafficSensor sensor."""
 
     @property
-    def custom_name(self) -> str:
+    def name(self) -> str:
         """Return the name for this entity"""
         return f"{self.entity_description.name}"
 
-    # @property
-    # def available(self) -> bool:
-    #     """Return if controller and accounting feature in Mikrotik is available.
-    #     Additional check for lan-tx/rx sensors
-    #     """
-    #     if self.entity_description.data_attribute in ["lan-tx", "lan-rx"]:
-    #         return (
-    #             self.coordinator.connected()
-    #             and self._data["available"]
-    #             and self._data["local_accounting"]
-    #         )
-    #     else:
-    #         return self.coordinator.connected() and self._data["available"]
+    @property
+    def available(self) -> bool:
+        """Return if controller and accounting feature in Mikrotik is available.
+        Additional check for lan-tx/rx sensors
+        """
+        if self.entity_description.data_attribute in ["lan-tx", "lan-rx"]:
+            return (
+                self.coordinator.connected()
+                and self._data["available"]
+                and self._data["local_accounting"]
+            )
+        else:
+            return self.coordinator.connected() and self._data["available"]
