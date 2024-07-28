@@ -146,7 +146,7 @@ def parse_api(
 # ---------------------------
 #   get_uid
 # ---------------------------
-def get_uid(entry, key, key_secondary, key_search, keymap) -> Optional[str]:
+def get_uid(entry, key, key_secondary, key_search, keymap) -> Optional(str):  # type: ignore
     """Get UID for data list."""
     uid = None
     if not key_search:
@@ -175,7 +175,7 @@ def get_uid(entry, key, key_secondary, key_search, keymap) -> Optional[str]:
 # ---------------------------
 #   generate_keymap
 # ---------------------------
-def generate_keymap(data, key_search) -> Optional[dict]:
+def generate_keymap(data, key_search) -> Optional(dict):  # type: ignore
     """Generate keymap."""
     return (
         {data[uid][key_search]: uid for uid in data if key_search in data[uid]}
