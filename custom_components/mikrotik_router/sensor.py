@@ -15,7 +15,7 @@ from homeassistant.helpers.typing import StateType
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .coordinator import MikrotikCoordinator
-from .entity import MikrotikEntity
+from .entity import MikrotikEntity, async_add_entities
 from .helper import format_attribute
 from .sensor_types import (
     SENSOR_TYPES,
@@ -42,7 +42,7 @@ async def async_setup_entry(
         "MikrotikInterfaceTrafficSensor": MikrotikInterfaceTrafficSensor,
         "MikrotikClientTrafficSensor": MikrotikClientTrafficSensor,
     }
-    await _async_add_entities([dispatcher[sensor](...) for sensor in dispatcher])
+    await async_add_entities(hass, config_entry, dispatcher)
 
 
 # ---------------------------
